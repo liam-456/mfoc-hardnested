@@ -281,19 +281,18 @@ int main(int argc, char *const argv[])
   // see http://www.nxp.com/documents/application_note/AN10833.pdf Section 3.2
   switch (t.nt.nti.nai.btSak)
   {
-    case 0x01:
     case 0x08:
     case 0x88:
+      printf("Found Mifare Classic 1k tag\n");
+      t.num_sectors = NR_TRAILERS_1k;
+      t.num_blocks = NR_BLOCKS_1k;
+      break;
     case 0x28:
-      if (get_rats_is_2k(t, r)) {
-          printf("Found Mifare Plus 2k tag\n");
-          t.num_sectors = NR_TRAILERS_2k;
-          t.num_blocks = NR_BLOCKS_2k;
-      } else {
-        printf("Found Mifare Classic 1k tag\n");
-        t.num_sectors = NR_TRAILERS_1k;
-        t.num_blocks = NR_BLOCKS_1k;
-      }
+    case 0x48:
+    case 0x68:
+      printf("Found Mifare Classic 1k tag (emulated)\n");
+      t.num_sectors = NR_TRAILERS_1k;
+      t.num_blocks = NR_BLOCKS_1k;
       break;
     case 0x09:
       printf("Found Mifare Classic Mini tag\n");
@@ -302,6 +301,13 @@ int main(int argc, char *const argv[])
       break;
     case 0x18:
       printf("Found Mifare Classic 4k tag\n");
+      t.num_sectors = NR_TRAILERS_4k;
+      t.num_blocks = NR_BLOCKS_4k;
+      break;
+    case 0x38:
+    case 0x58:
+    case 0x78:
+      printf("Found Mifare Classic 4k tag (emulated)\n");
       t.num_sectors = NR_TRAILERS_4k;
       t.num_blocks = NR_BLOCKS_4k;
       break;
